@@ -1,9 +1,11 @@
 package org.example.shelter;
 
 import org.example.model.Animal;
+import org.example.model.AdoptionStatus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Shelter <T extends Animal>{
     private final List<T> animals = new ArrayList<>();
@@ -13,21 +15,27 @@ public class Shelter <T extends Animal>{
     }
 
     public List<T> getAllAnimals(){
-        // TODO
-        return null;
+        return new ArrayList<>(animals);
     }
 
     public List<T> findBySpecies(String species){
-        // TODO
-        return null;
+        return animals.stream()
+                .filter(animal -> animal.getSpecies().equalsIgnoreCase(species))
+                .collect(Collectors.toList());
     }
 
     public List<T> findAvailableAnimals(){
-        // TODO
-        return null;
+        return animals.stream()
+                .filter(animal -> animal.getAdoptionStatus() == AdoptionStatus.AVAILABLE)
+                .collect(Collectors.toList());
     }
 
     public void markAsAdopted(String id){
-        // TODO
+        for (T animal : animals) {
+            if (animal.getId().toString().equals(id)) {
+                animal.markAsAdopted();
+                return;
+            }
+        }
     }
 }
